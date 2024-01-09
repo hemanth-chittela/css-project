@@ -17,6 +17,5 @@ spec:
       containers:
       - name: delivery-application
         image: hemanth1337/binance:latest
-        imagePullPolicy: Always
         ports:
         - containerPort: 80
