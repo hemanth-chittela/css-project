@@ -18,4 +18,4 @@ spec:
       - name: delivery-application
         image: hemanth1337/binance:81
         ports:
-        - containerPort: 80
+        - containerPort: 82
