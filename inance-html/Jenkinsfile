@@ -38,7 +38,7 @@ pipeline {
         }
             stage('docker container creation') {
             steps {
-                sh 'docker container run -dt --name image1 hemanth1337/binance:$TAG'
+                sh 'docker container run -dt --name image1 -p 80:80 hemanth1337/binance:$TAG'
                 }
             }
             stage('docker login') {
