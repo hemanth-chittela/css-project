@@ -4,7 +4,7 @@ pipeline {
     environment
     {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub1')
-        TAG = 'v2'
+        TAG = "${BUILD_ID}"
     }
 
     stages {
