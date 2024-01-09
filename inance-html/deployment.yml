@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: delivery-application
-        image: hemanth1337/binance:82
+        image: hemanth1337/binance:83
         ports:
         - containerPort: 80
