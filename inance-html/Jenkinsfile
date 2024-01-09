@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+    
+    environment
+    {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub1')
+        TAG = 'v2'
+    }
+
+    stages {
+        stage('deleting the current directory') {
+            steps {
+                    deleteDir()
+            }
+        }
+        
+        stage('deleting the existing images/containers') {
+            steps {
+                    sh 'docker stop $(docker ps -aq)'
+                    sh 'docker rm $(docker ps -aq)'
+                    sh 'docker rmi $(docker images -q)'
+            }
+        }
+        
+        stage('git cloning') {
+            steps {
+                git branch: 'main', 
+                credentialsId: 'github', 
+                url: 'https://github.com/hemanth-chittela/css-project.git'
+             }
+        }
+        stage('docker build') {
+            steps {
+                dir("/var/lib/jenkins/workspace/kubernetes-project/inance-html"){
+                sh 'docker build -t hemanth1337/binance:$TAG .'
+                }
+            }
+        }
+            stage('docker container creation') {
+            steps {
+                sh 'docker container run -dt --name image1 hemanth1337/binance:$TAG'
+                }
+            }
+            stage('docker login') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                echo 'Logged in to Docker Hub'
+                     }
+                 }
+                 stage('docker push') {
+                 steps {
+                        sh 'docker push hemanth1337/binance:$TAG'
+                        echo 'image pushed to the dockerhub'
+                     }
+                 }
+                 stage('kubernetes files') {
+                 steps {
+                        dir("/var/lib/jenkins/workspace/kubernetes-project/inance-html"){
+                        sh 'kubectl apply -f deployment.yml'
+                        sh 'kubectl apply -f service.yml'
+                     }
+                 }
+            }
+        }
+}
