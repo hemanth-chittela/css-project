@@ -49,7 +49,7 @@ pipeline {
                  }
                  stage('docker push') {
                  steps {
-                        sh 'docker push hemanth1337/binance:$TAG'
+                        sh 'docker push $DOCKERHUB_CREDENTIALS_USR/binance:$TAG'
                         echo 'image pushed to the dockerhub'
                      }
                  }
