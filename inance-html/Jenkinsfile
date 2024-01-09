@@ -32,13 +32,13 @@ pipeline {
         stage('docker build') {
             steps {
                 dir("/var/lib/jenkins/workspace/kubernetes-project/inance-html"){
-                sh 'docker build -t hemanth1337/binance:$TAG .'
+                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/binance:$TAG .'
                 }
             }
         }
             stage('docker container creation') {
             steps {
-                sh 'docker container run -dt --name image1 -p 80:80 hemanth1337/binance:$TAG'
+                sh 'docker container run -dt --name image1 -p 80:80 $DOCKERHUB_CREDENTIALS_USR/binance:$TAG'
                 }
             }
             stage('docker login') {
