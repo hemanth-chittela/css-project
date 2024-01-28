@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+    }
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Git checkout') {
+            steps {
+                git branch: 'latest', 
+                url: 'https://github.com/jaiswaladi246/10-MicroService-Appliction.git'
+            }
+        }
+        stage('Sonarqube') {
+            steps {
+                    withSonarQubeEnv('sonar') {
+                        sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=10-microservices -Dsonar.projectName=10-microservices -Dsonar.java.binaries=. '''
+                    }
+                }
+            }
+            stage('ad service') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/microservices/10-microservices/src/adservice') {
+                        sh 'docker build -t hemanth1337/adservice:latest .'
+                        sh 'docker push hemanth1337/adservice:latest'
+                        sh 'docker rmi hemanth1337/adservice:latest'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
