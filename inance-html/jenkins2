@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        SCANNER_HOME = tool 'sonar-scanner'
+        SCANNER_HOME = tool 'sonarqube'
     }
 
     stages {
@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Sonarqube') {
             steps {
-                    withSonarQubeEnv('sonar') {
+                    withSonarQubeEnv('sonarc') {
                         sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=10-microservices -Dsonar.projectName=10-microservices -Dsonar.java.binaries=. '''
                     }
                 }
@@ -28,13 +28,162 @@ pipeline {
             steps {
                 script
                 {
-                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                    dir('/var/lib/jenkins/workspace/microservices/10-microservices/src/adservice') {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/adservice') {
                         sh 'docker build -t hemanth1337/adservice:latest .'
                         sh 'docker push hemanth1337/adservice:latest'
                         sh 'docker rmi hemanth1337/adservice:latest'
                         }
                     }
+                }
+            }
+        }
+        stage('cart service') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/cartservice/src') {
+                        sh 'docker build -t hemanth1337/cartservice:latest .'
+                        sh 'docker push hemanth1337/cartservice:latest'
+                        sh 'docker rmi hemanth1337/cartservice:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('currency service') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/currencyservice') {
+                        sh 'docker build -t hemanth1337/currencyservice:latest .'
+                        sh 'docker push hemanth1337/currencyservice:latest'
+                        sh 'docker rmi hemanth1337/currencyservice:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Front-end') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/frontend') {
+                        sh 'docker build -t hemanth1337/frontend:latest .'
+                        sh 'docker push hemanth1337/frontend:latest'
+                        sh 'docker rmi hemanth1337/frontend:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('paymentservice') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/paymentservice') {
+                        sh 'docker build -t hemanth1337/paymentservice:latest .'
+                        sh 'docker push hemanth1337/paymentservice:latest'
+                        sh 'docker rmi hemanth1337/paymentservice:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('recommendationservice') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/recommendationservice') {
+                        sh 'docker build -t hemanth1337/recommendationservice:latest .'
+                        sh 'docker push hemanth1337/recommendationservice:latest'
+                        sh 'docker rmi hemanth1337/recommendationservice:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('checkoutservice') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/checkoutservice') {
+                        sh 'docker build -t hemanth1337/checkoutservice:latest .'
+                        sh 'docker push hemanth1337/checkoutservice:latest'
+                        sh 'docker rmi hemanth1337/checkoutservice:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('emailservice') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/emailservice') {
+                        sh 'docker build -t hemanth1337/emailservice:latest .'
+                        sh 'docker push hemanth1337/emailservice:latest'
+                        sh 'docker rmi hemanth1337/emailservice:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('loadgenerator') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/loadgenerator') {
+                        sh 'docker build -t hemanth1337/loadgenerator:latest .'
+                        sh 'docker push hemanth1337/loadgenerator:latest'
+                        sh 'docker rmi hemanth1337/loadgenerator:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('productcatalogue') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/productcatalogservice') {
+                        sh 'docker build -t hemanth1337/productcatalogue:latest .'
+                        sh 'docker push hemanth1337/productcatalogue:latest'
+                        sh 'docker rmi hemanth1337/productcatalogue:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('shippingservice') {
+            steps {
+                script
+                {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                    dir('/var/lib/jenkins/workspace/3-tier/10microservices/src/shippingservice') {
+                        sh 'docker build -t hemanth1337/shippingservice:latest .'
+                        sh 'docker push hemanth1337/shippingservice:latest'
+                        sh 'docker rmi hemanth1337/shippingservice:latest'
+                        }
+                    }
+                }
+            }
+        }
+        stage('kubernetes')
+        {
+            steps
+            {
+                withKubeConfig(caCertificate: '', clusterName: 'my-eks2', contextName: '', credentialsId: 'kube-secret', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://0A2353C84D25F46CBEB0437E4249EB98.gr7.ap-south-1.eks.amazonaws.com'){
+                    sh 'kubectl get namespaces'
                 }
             }
         }
