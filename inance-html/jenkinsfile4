@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                ech 'Hello World'
+            }
+        }
+    }
+    post { 
+        success { 
+            emailext body: 'the build is success', 
+            subject: 'success', 
+            to: '15j41a05k0@gmail.com'
+            slackSend channel: '# general', 
+            message: 'success', 
+            teamDomain: 'devopsnewproject', 
+            tokenCredentialId: 'slack'
+        }
+        failure { 
+            emailext body: 'the build is failed', 
+            subject: 'Failed', 
+            to: '15j41a05k0@gmail.com'
+            slackSend channel: '# general', 
+            message: 'Failed', 
+            teamDomain: 'devopsnewproject', 
+            tokenCredentialId: 'slack'
+        }
+    }
+}
