@@ -10,7 +10,6 @@ then
    fi
 done
 
-
 echo 'printing odd numbers'
 
 for ((i=1; i<=10; i++))
