@@ -1,0 +1,35 @@
+---
+example of an ansible file
+
+- name: installing the nginx
+  hosts: n1
+  become: yes
+
+  tasks:
+   - name: updating the server
+     apt:
+      updated_cache: yes
+
+   - name: installing the nginx
+     apt: 
+      name: nginx
+      state: present
+
+   - name: starting the nginx
+     service: 
+       name: nginx
+       state: started
+
+   - name: enabling the nginx
+     service: 
+      name: nginx
+      enabled: yes
+      register: output_for_the_nginx
+
+   - name: output for the nginx
+     debug: 
+       msg: 
+
+  {{"output_for_the_nginx.stdout_lines"}}
+
+...
