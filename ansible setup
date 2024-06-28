@@ -1,0 +1,8 @@
+1.	Firstly create a ssh-keygen in the master ansible node as a root user
+2.	In the master node as a root go to the sudo vi /etc/ansible/hosts and add the following 
+[slave]
+13.233.201.44 this is public ip of the slave server
+Then do ansible -m ping slave we get an error which is expected.
+“sudo systemctl restart sshd” this command can be used after adding the server ip details in the hosts file in the master server as a root user
+3.	Then in the slave node as a root user go to .ssh folder it will be present there by default on creating the server. 
+4.	Then navigate into the .ssh and create a file called authorized_keys and paste the public key in it. This public key is coming from the master ssh-keygen and save it and from the master using ansible -m ping name which would be slave or something which we are giving in the square brackets [slave].
